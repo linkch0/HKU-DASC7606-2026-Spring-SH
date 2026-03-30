@@ -1,0 +1,115 @@
+"""
+Image encoders for CLIP model.
+Supports ResNet50 and Vision Transformer (ViT) architectures.
+"""
+
+import torch
+import torch.nn as nn
+import torchvision.models as models
+
+
+class ResNet50Encoder(nn.Module):
+    """
+    ResNet50-based image encoder.
+    Paper: "Deep Residual Learning for Image Recognition" (He et al., 2015)
+    https://arxiv.org/abs/1512.03385
+    """
+
+    def __init__(self, pretrained=True):
+        super().__init__()
+        # Load pretrained ResNet50
+        weights = models.ResNet50_Weights.DEFAULT if pretrained else None
+        resnet = models.resnet50(weights=weights)
+
+        # TODO: Get the feature dimension
+
+        # TODO: Remove classification head
+
+    def forward(self, images: torch.Tensor) -> torch.Tensor:
+        """
+        Encode images into embeddings.
+        Args:
+            images: Batch of images [batch_size, 3, H, W]
+        Returns:
+            features: Image features [batch_size, 2048]
+        """
+        # TODO: Extract features
+        # Shape: [batch_size, 2048, 1, 1]
+
+        # TODO: Reshape to [batch_size, 2048]
+
+        pass
+
+
+class ViTEncoder(nn.Module):
+    """
+    Vision Transformer (ViT) based image encoder.
+    Paper: "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" (Dosovskiy et al., 2020)
+    https://arxiv.org/abs/2010.11929
+    """
+
+    def __init__(self, pretrained=True):
+        super().__init__()
+        # Load pretrained Vision Transformer ViT-B/16
+        weights = models.ViT_B_16_Weights.DEFAULT if pretrained else None
+        vit = models.vit_b_16(weights=weights)
+
+        # TODO: Get the feature dimension
+
+        # TODO: Replace classification head with identity
+
+        self.vit = vit
+
+    def forward(self, images: torch.Tensor) -> torch.Tensor:
+        """
+        Encode images into embeddings.
+        Args:
+            images: Batch of images [batch_size, 3, 224, 224]
+        Returns:
+            features: Image features [batch_size, 768]
+        """
+        # TODO: Extract features
+        # We use the [CLS] token representation as the image feature vector
+        # [CLS] token is the first token in the sequence
+        # It always interacts with all other tokens, so it captures global image information
+        # Shape: [batch_size, 768]
+
+        pass
+
+
+class ImageEncoder(nn.Module):
+    """
+    CLIP Image Encoder that supports both ResNet50 and ViT backbones.
+    Extracts features from images and projects them to the embedding space.
+    """
+
+    def __init__(
+        self,
+        encoder_type="vit",
+        embed_dim=512,
+        pretrained=True,
+    ):
+        super().__init__()
+        if encoder_type == "resnet":
+            self.encoder = ResNet50Encoder(pretrained)
+        elif encoder_type == "vit":
+            self.encoder = ViTEncoder(pretrained)
+        else:
+            raise ValueError(f"Unknown encoder type: {encoder_type}")
+
+        # TODO: Freeze pre-trained encoder parameters
+
+        # TODO: Create a sequential network that maps encoder features to embed_dim
+        # Architecture: Linear -> ReLU -> Linear
+
+    def forward(self, images: torch.Tensor) -> torch.Tensor:
+        """
+        Encode images and project to embedding space.
+        Args:
+            images: Batch of images [batch_size, 3, H, W]
+        Returns:
+            embeddings: Image embeddings [batch_size, embed_dim]
+        """
+        # TODO: Extract features
+        # TODO: Project features to embedding space
+        pass

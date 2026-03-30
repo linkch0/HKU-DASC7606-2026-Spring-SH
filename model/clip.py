@@ -1,0 +1,109 @@
+"""
+Main CLIP model combining image and text encoders.
+Implements contrastive learning for joint vision-language understanding.
+"""
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+from model.image_encoder import ImageEncoder
+from model.text_encoder import TextEncoder, TextTokenizer
+
+
+class CLIP(nn.Module):
+    """
+    CLIP model for contrastive vision-language learning.
+    Learns to align image and text representations in a joint embedding space.
+    """
+
+    def __init__(
+        self,
+        encoder_type="vit",
+        embed_dim=512,
+        temperature=0.07,
+        pretrained=True,
+    ):
+        super().__init__()
+        # TODO: Image encoder (ResNet50 or ViT)
+
+        # TODO: Text tokenizer and encoder (RoBERTa-based)
+
+        # Temperature parameter for scaling logits in contrastive loss
+        # Learnable log-temperature
+        self.log_temperature = nn.Parameter(torch.tensor(temperature).log())
+
+    @property
+    def temperature(self):
+        # Return the actual temperature by exponentiating the log-temperature
+        return self.log_temperature.exp()
+
+    def compute_similarity(self, images, texts):
+        """
+        Compute cosine similarity between images and texts.
+
+        Args:
+            images: Batch of images [batch_size, 3, 224, 224]
+            texts: List of text prompts [batch_size]
+        Returns:
+            logits: Similarity scores [batch_size, batch_size]
+        """
+        # TODO: Encode images
+        # Shape: [batch_size, embed_dim]
+
+        # TODO: Tokenize text then encode tokens
+        # Shape: [batch_size, embed_dim]
+
+        # TODO: L2 normalize both embeddings, so that their dot product equals cosine similarity
+
+        # TODO: Compute NxN similarity matrix, then scale by temperature
+        # Shape: [batch_size, batch_size]
+
+        pass
+
+    def forward(self, images, texts, labels):
+        """
+        Compute symmetric contrastive loss.
+        See: https://lilianweng.github.io/posts/2021-05-31-contrastive/#clip
+
+        This loss encourages:
+        - High similarity between matching image-text pairs
+        - Low similarity between non-matching pairs
+
+        Args:
+            images: Batch of images [batch_size, 3, 224, 224]
+            texts: List of text prompts [batch_size]
+            labels: Diagonal labels indicating correct matches [batch_size]
+
+        Returns:
+            dict with keys:
+            - "logits": Similarity scores [batch_size, batch_size]
+            - "loss": Scalar contrastive loss
+        """
+        # TODO: Compute the NxN similarity logits
+        # Shape: [batch_size, batch_size]
+
+        # TODO: Compute image-to-text cross entropy loss
+
+        # TODO: Compute text-to-image cross entropy loss
+
+        # TODO: Average both loss directions
+
+        pass
+
+    def predict(self, images, texts):
+        """
+        Predict class labels for a batch of images given text prompts.
+
+        Args:
+            images: Batch of images [batch_size, 3, 224, 224]
+            texts: List of text prompts [num_classes]
+
+        Returns:
+            predictions: Class predictions [batch_size]
+            probabilities: Class probabilities [batch_size, num_classes]
+        """
+        # TODO: Compute similarities: [batch_size, num_classes]
+
+        # TODO: Get predicted class indices and probabilities
+        pass
