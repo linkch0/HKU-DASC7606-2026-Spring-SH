@@ -1,7 +1,5 @@
 datasets==4.8.2
 numpy==2.4.3
 safetensors==0.7.0
-torch==2.10.0+cu126
-torchvision==0.25.0+cu126
 tqdm==4.67.3
 transformers==5.3.0

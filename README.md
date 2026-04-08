@@ -81,16 +81,12 @@ source ~/miniconda3/bin/activate
 conda init --all
 ```
 
-**Virtual Environment**: Create and activate a Conda virtual environment:
-
-```shell
-conda create -n clip_env python=3.10
-conda activate clip_env
-```
+**Virtual Environment**: You can just use the default base environment for this assignment. You can create a new conda environment if you want, but it's not required.
 
 **Install Required Libraries**: Install PyTorch following the [official guidelines](https://pytorch.org/get-started/locally/), then install the project dependencies:
 
 ```shell
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 pip install -r requirements.txt
 ```
 
