@@ -31,6 +31,7 @@ class TestDataset(Dataset):
         return img, fname
 
 
+# DO NOT change the mapping of class IDs to names
 class_dict = {
     0: "Arctic fox, white fox, Alopex lagopus",
     1: "Australian terrier",
@@ -114,13 +115,13 @@ results = []
 with torch.no_grad():
     for images, filenames in tqdm(dataloader, desc="Predicting"):
         images = images.to("cuda")
-        preds, _ = model.predict(images, texts)
-        for fname, pred in zip(filenames, preds.cpu().tolist()):
+        _, probs = model.predict(images, texts)
+        top10_ids = torch.topk(probs, k=10, dim=-1).indices.cpu().tolist()
+        for fname, ids in zip(filenames, top10_ids):
             results.append(
                 {
                     "filename": fname,
-                    "label_id": pred,
-                    "label_name": class_names[pred],
+                    "top10_ids": ids,
                 }
             )
 
