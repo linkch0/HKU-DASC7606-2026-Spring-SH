@@ -184,8 +184,7 @@ Change the best model checkpoint path in `config.py` then run `predict.py` to ge
 [
   {
     "filename": "0001.jpg",
-    "label_id": n,
-    "label_name": "xxxx"
+    "top10_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   },
   ...
 ]
